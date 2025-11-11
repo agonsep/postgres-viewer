@@ -36,7 +36,15 @@ A React-based web application for browsing and querying PostgreSQL databases wit
 
 The application consists of two parts: a frontend React app and a backend Express server.
 
-### Option 1: Run both simultaneously (Recommended for Windows)
+### Development Mode
+
+**Option 1: Run both simultaneously (Recommended)**
+
+```bash
+npm run start:dev
+```
+
+**Option 2: Run separately**
 
 Open two terminal windows:
 
@@ -50,13 +58,55 @@ npm run server
 npm run dev
 ```
 
-### Option 2: Single command (Linux/Mac)
+The backend server will run on `http://localhost:3001` and the frontend will run on `http://localhost:5173`.
+
+### Production Mode
 
 ```bash
+npm run build
 npm start
 ```
 
-The backend server will run on `http://localhost:3001` and the frontend will run on `http://localhost:5173`.
+## Deploy to Railway
+
+This application is configured for easy deployment to Railway.
+
+### Quick Deploy
+
+1. **Push your code to GitHub** (already done!)
+
+2. **Deploy to Railway:**
+   - Go to [Railway](https://railway.app/)
+   - Click "New Project"
+   - Select "Deploy from GitHub repo"
+   - Choose your `postgres-viewer` repository
+   - Railway will auto-detect the configuration
+
+3. **Add PostgreSQL Database:**
+   - In your Railway project, click "New"
+   - Select "Database" → "Add PostgreSQL"
+   - Railway will automatically create a PostgreSQL instance
+
+4. **Configure Environment Variables:**
+   - Railway automatically sets `PORT` and database connection variables
+   - Add `NODE_ENV=production` in the Variables tab (optional, auto-detected)
+
+5. **Your app is live!**
+   - Railway will provide a public URL (e.g., `https://your-app.up.railway.app`)
+
+### Railway Configuration Files
+
+The project includes:
+- `railway.json` - Railway deployment configuration
+- `nixpacks.toml` - Build configuration
+- `Procfile` - Process configuration
+
+### Local Testing of Production Build
+
+```bash
+NODE_ENV=production npm run build
+NODE_ENV=production npm start
+```
 
 ## Usage
 
@@ -65,6 +115,8 @@ The backend server will run on `http://localhost:3001` and the frontend will run
      ```
      postgresql://username:password@host:port/database
      ```
+   - For Railway PostgreSQL, use the connection string from your Railway dashboard
+   - For empty passwords, use: `postgresql://username@host:port/database`
    - Click the "Connect" button
 
 2. **Browse Databases**:

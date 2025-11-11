@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "npx tsx watch server/index.ts",
-    "start": "npm run server & npm run dev"
+    "start": "node --loader tsx server/index.ts",
+    "start:dev": "npm run server & npm run dev"
   },
   "dependencies": {
     "cors": "^2.8.5",
