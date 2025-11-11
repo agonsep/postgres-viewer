@@ -69,37 +69,68 @@ npm start
 
 ## Deploy to Railway
 
-This application is configured for easy deployment to Railway.
+This application requires two separate Railway services: one for the backend and one for the frontend.
 
-### Quick Deploy
+### Step-by-Step Deployment
 
 1. **Push your code to GitHub** (already done!)
 
-2. **Deploy to Railway:**
+2. **Create a new Railway project:**
    - Go to [Railway](https://railway.app/)
    - Click "New Project"
-   - Select "Deploy from GitHub repo"
-   - Choose your `postgres-viewer` repository
-   - Railway will auto-detect the configuration
-
+   
 3. **Add PostgreSQL Database:**
-   - In your Railway project, click "New"
+   - Click "+ New"
    - Select "Database" → "Add PostgreSQL"
-   - Railway will automatically create a PostgreSQL instance
+   - Railway will create a PostgreSQL instance
 
-4. **Configure Environment Variables:**
-   - Railway automatically sets `PORT` and database connection variables
-   - Add `NODE_ENV=production` in the Variables tab (optional, auto-detected)
+4. **Deploy Backend Service:**
+   - Click "+ New" → "GitHub Repo"
+   - Select your `postgres-viewer` repository
+   - Click on "Configure" → "Root Directory"
+   - Set root directory to `/server`
+   - Add environment variables:
+     - `NODE_ENV` = `production`
+     - `FRONTEND_URL` = (will be set after deploying frontend)
+   - Railway will use `/server/nixpacks.toml` and `/server/railway.json`
 
-5. **Your app is live!**
-   - Railway will provide a public URL (e.g., `https://your-app.up.railway.app`)
+5. **Deploy Frontend Service:**
+   - Click "+ New" → "GitHub Repo"
+   - Select the same `postgres-viewer` repository (yes, again!)
+   - Keep root directory as `/` (root)
+   - Add environment variable:
+     - `VITE_API_URL` = `https://your-backend-service.railway.app` (from step 4)
+   - Railway will use `/nixpacks.toml` and `/railway.json`
+
+6. **Update Backend CORS:**
+   - Go back to backend service variables
+   - Set `FRONTEND_URL` = `https://your-frontend-service.railway.app`
+   - Backend will restart automatically
+
+7. **Your app is live!**
+   - Access your app via the frontend URL
+   - Use the PostgreSQL connection string from Railway to connect to the database
 
 ### Railway Configuration Files
 
 The project includes:
-- `railway.json` - Railway deployment configuration
-- `nixpacks.toml` - Build configuration
-- `Procfile` - Process configuration
+- Root level:
+  - `railway.json` - Frontend deployment configuration
+  - `nixpacks.toml` - Frontend build configuration
+- `/server` directory:
+  - `railway.json` - Backend deployment configuration
+  - `nixpacks.toml` - Backend build configuration
+
+### Environment Variables Summary
+
+**Backend Service:**
+- `PORT` - Auto-set by Railway
+- `NODE_ENV` - Set to `production`
+- `FRONTEND_URL` - Your frontend Railway URL
+
+**Frontend Service:**
+- `PORT` - Auto-set by Railway
+- `VITE_API_URL` - Your backend Railway URL
 
 ### Local Testing of Production Build
 

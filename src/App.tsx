@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './App.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 interface Column {
   name: string;
   dataTypeID: number;
@@ -31,7 +33,7 @@ function App() {
     try {
       setError('');
       setLoading(true);
-      const response = await fetch('http://localhost:3001/api/connect', {
+      const response = await fetch(`${API_URL}/api/connect`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ connectionString }),
@@ -54,7 +56,7 @@ function App() {
 
   const fetchDatabases = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/databases');
+      const response = await fetch(`${API_URL}/api/databases`);
       const data = await response.json();
 
       if (response.ok) {
@@ -75,7 +77,7 @@ function App() {
       setTableData(null);
       setQuery('');
 
-      const response = await fetch(`http://localhost:3001/api/tables/${database}`);
+      const response = await fetch(`${API_URL}/api/tables/${database}`);
       const data = await response.json();
 
       if (response.ok) {
@@ -102,7 +104,7 @@ function App() {
       const sortBy = sort?.column || sortColumn;
       const order = sort?.order || sortOrder;
 
-      let url = `http://localhost:3001/api/table-data/${selectedDatabase}/${table}?limit=${rowLimit}`;
+      let url = `${API_URL}/api/table-data/${selectedDatabase}/${table}?limit=${rowLimit}`;
       if (sortBy) {
         url += `&sortBy=${sortBy}&sortOrder=${order}`;
       }
@@ -127,7 +129,7 @@ function App() {
       setError('');
       setLoading(true);
 
-      const response = await fetch('http://localhost:3001/api/query', {
+      const response = await fetch(`${API_URL}/api/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

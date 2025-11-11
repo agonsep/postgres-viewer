@@ -1,3 +1,4 @@
+# Frontend Railway Configuration
 [phases.setup]
 nixPkgs = ["nodejs_20"]
 
@@ -8,4 +9,7 @@ cmds = ["npm install"]
 cmds = ["npm run build"]
 
 [start]
-cmd = "npm start"
+cmd = "npx serve -s dist -l $PORT"
+
+[phases.setup]
+aptPkgs = []
